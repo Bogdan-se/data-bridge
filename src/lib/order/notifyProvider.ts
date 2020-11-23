@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as _ from 'lodash';
 
 import { asyncSleep } from 'src/lib/asyncSleep';
+import { logger } from 'src/lib/logger/_index';
 import { OrderInterface } from 'src/db/schemas/order.schema';
 import { ONE_MINUTE_IN_MS } from 'src/lib/const';
 
@@ -10,7 +11,7 @@ export async function notifyProvider(
   attempt: number = 0,
 ) {
   try {
-    console.log(
+    logger.log(
       `Notify provider ${JSON.stringify(order)}, attempt: ${attempt}`,
     );
     return await axios.post(`${process.env.PARTNER_API}/api/orders`, order, {
@@ -21,13 +22,13 @@ export async function notifyProvider(
     });
   } catch (e) {
     if (_.get(e, 'response.data', '') === 'Order already exists.') {
-      return;
+      return null;
     }
+    logger.error(e.message);
     if (
-      _.get(e, 'response.status') !== 400 &&
+      _.get(e, 'response.status') >= 500 &&
       attempt < _.toNumber(process.env.MAX_API_RETRY)
     ) {
-      console.log(`Retry ${JSON.stringify(e)}, attempt: ${attempt}`);
       await asyncSleep(ONE_MINUTE_IN_MS);
       return notifyProvider(order, ++attempt);
     }

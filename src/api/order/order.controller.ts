@@ -9,6 +9,7 @@ import { Request } from 'express';
 import * as _ from 'lodash';
 
 import Formatter from 'src/lib/formatter/_index';
+import { logger } from 'src/lib/logger/_index';
 import { Partner } from 'src/db/schemas/partner.schema';
 import { PartnerService } from 'src/db/partner.service';
 import { Order, ORDER_STATE } from 'src/db/schemas/order.schema';
@@ -93,7 +94,7 @@ export class OrderController {
         state: ORDER_STATE.PROCESSED,
       });
     } catch (e) {
-      console.error(e);
+      logger.error(e);
       await this.orderService.updateById(order._id, {
         state: ORDER_STATE.FAILED,
       });
