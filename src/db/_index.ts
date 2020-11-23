@@ -1,3 +1,4 @@
+import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CarrierSchema } from './schemas/carrier.schema';
 import { CarrierService } from './carrier.service';
@@ -7,7 +8,14 @@ import { PartnerSchema } from './schemas/partner.schema';
 import { PartnerService } from './partner.service';
 
 export const dbImports = [
-  MongooseModule.forRoot(process.env.DB_CONNECTION),
+  MongooseModule.forRootAsync({
+    imports: [ConfigModule],
+    useFactory: async () => ({
+      uri: process.env.DB_CONNECTION,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }),
+  }),
   MongooseModule.forFeature([
     { name: 'Carrier', schema: CarrierSchema },
     { name: 'Order', schema: OrderSchema },
