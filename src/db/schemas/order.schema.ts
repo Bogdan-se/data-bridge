@@ -41,10 +41,10 @@ export class Order extends Document {
   partnerId: string;
 
   @Prop()
-  data: OrderInterface;
+  data: OrderInterface | null;
 
   @Prop()
-  originalData: object;
+  originalData: unknown;
 
   @Prop()
   isValid: boolean;

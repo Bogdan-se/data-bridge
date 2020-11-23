@@ -8,15 +8,15 @@ import { Order } from './schemas/order.schema';
 export class OrderService {
   constructor(@InjectModel(Order.name) private orderModel: Model<Order>) {}
 
-  async create(order: object): Promise<Order> {
+  async create(order: Order): Promise<Order> {
     const createdOrder = new this.orderModel(order);
 
     return createdOrder.save();
   }
-  async updateById(_id: string, data: object): Promise<Order> {
+  async updateById(_id: string, data: unknown): Promise<Order> {
     return this.orderModel.updateOne({ _id }, { $set: data });
   }
-  async findAll(data: object): Promise<Order[]> {
+  async findAll(data: unknown): Promise<Order[]> {
     return this.orderModel.find(data).exec();
   }
 }

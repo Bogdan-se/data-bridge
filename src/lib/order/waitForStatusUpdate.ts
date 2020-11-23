@@ -12,12 +12,14 @@ export async function waitForStatusUpdate(orderId: string) {
 
     const orderState = await getOrderState(orderId, attempt);
 
-    if (_.get(orderState, 'data.State') === process.env.PARTNER_ORDER_FINISHED) {
+    if (
+      _.get(orderState, 'data.State') === process.env.PARTNER_ORDER_FINISHED
+    ) {
       return orderState;
     }
 
     if (attempt > _.toNumber(process.env.MAX_API_RETRY)) {
-      logger.error(`Max retry on status update occurred for ${orderId}`)
+      logger.error(`Max retry on status update occurred for ${orderId}`);
       throw new Error('Max retry occurred');
     }
 
@@ -47,4 +49,4 @@ const getOrderState = async (orderId: string, attempt: number) => {
     }
     return {};
   }
-}
+};

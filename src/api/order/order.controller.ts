@@ -19,7 +19,6 @@ import { notifyPartner } from 'src/lib/order/notifyPartner';
 import { notifyProvider } from 'src/lib/order/notifyProvider';
 import { waitForStatusUpdate } from 'src/lib/order/waitForStatusUpdate';
 
-
 @Controller('order')
 export class OrderController {
   constructor(
@@ -31,7 +30,7 @@ export class OrderController {
   }
 
   @Post()
-  async createOrder(@Req() req: Request): Promise<object> {
+  async createOrder(@Req() req: Request): Promise<any> {
     const partner = await this.getPartner(req);
     const formatter = this.formatter.getProvider(partner.provider);
 
@@ -44,17 +43,17 @@ export class OrderController {
         originalData: req.body,
         isValid: true,
         state: ORDER_STATE.NEW,
-      });
+      } as Order);
 
       this.processOrder(createdOrder, partner);
     } catch {
       await this.orderService.create({
         partnerId: partner._id,
-        data: {},
+        data: null,
         originalData: req.body,
         isValid: false,
         state: ORDER_STATE.INVALID,
-      });
+      } as Order);
     }
 
     return req.body;

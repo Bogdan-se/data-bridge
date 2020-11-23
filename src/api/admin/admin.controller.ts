@@ -19,7 +19,7 @@ export class AdminController {
   }
 
   @Get('partner')
-  async listPartners(@Req() req: Request): Promise<Partner[]> {
+  async listPartners(): Promise<Partner[]> {
     return this.partnerService.findAll({});
   }
 

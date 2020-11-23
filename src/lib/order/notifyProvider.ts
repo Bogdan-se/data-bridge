@@ -6,14 +6,9 @@ import { logger } from 'src/lib/logger/_index';
 import { OrderInterface } from 'src/db/schemas/order.schema';
 import { ONE_MINUTE_IN_MS } from 'src/lib/const';
 
-export async function notifyProvider(
-  order: OrderInterface,
-  attempt: number = 0,
-) {
+export async function notifyProvider(order: OrderInterface, attempt = 0) {
   try {
-    logger.log(
-      `Notify provider ${JSON.stringify(order)}, attempt: ${attempt}`,
-    );
+    logger.log(`Notify provider ${JSON.stringify(order)}, attempt: ${attempt}`);
     return await axios.post(`${process.env.PARTNER_API}/api/orders`, order, {
       auth: {
         username: process.env.PARTNER_USERNAME,

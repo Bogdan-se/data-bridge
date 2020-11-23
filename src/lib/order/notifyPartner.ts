@@ -10,7 +10,7 @@ import { Partner } from 'src/db/schemas/partner.schema';
 export async function notifyPartner(
   order: OrderInterface,
   partner: Partner,
-  attempt: number = 0,
+  attempt = 0,
 ) {
   try {
     logger.log(`Notify partner ${JSON.stringify(order)}, attempt: ${attempt}`);

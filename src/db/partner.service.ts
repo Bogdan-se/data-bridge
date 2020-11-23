@@ -13,7 +13,7 @@ export class PartnerService {
   async findByKey(inboundApiKey: string): Promise<Partner> {
     return await this.partnerModel.findOne({ inboundApiKey }).exec();
   }
-  async findAll(data: object): Promise<Partner[]> {
+  async findAll(data: unknown): Promise<Partner[]> {
     return await this.partnerModel.find(data).exec();
   }
 

@@ -1,3 +1,3 @@
 export abstract class AbstractFormatter {
-  abstract normalizeOrder(order: object): void;
+  abstract normalizeOrder(order: unknown): void;
 }
