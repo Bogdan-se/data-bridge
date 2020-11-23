@@ -87,12 +87,14 @@ export class OrderController {
 
   async processOrder(order: Order, partner: Partner) {
     try {
+      logger.log(`Starting processing of order ${order._id}`);
       await notifyProvider(order.data);
       await waitForStatusUpdate(order.data.OrderID);
       await notifyPartner(order.data, partner);
       await this.orderService.updateById(order._id, {
         state: ORDER_STATE.PROCESSED,
       });
+      logger.log(`Order ${order._id} successfully processed`);
     } catch (e) {
       logger.error(e);
       await this.orderService.updateById(order._id, {
