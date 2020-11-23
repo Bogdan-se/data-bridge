@@ -11,7 +11,7 @@ export const dbImports = [
   MongooseModule.forRootAsync({
     imports: [ConfigModule],
     useFactory: async () => ({
-      uri: process.env.DB_CONNECTION,
+      uri: process.env.MONGO_CONNECTION_STRING,
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }),
