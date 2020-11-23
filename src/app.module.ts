@@ -5,6 +5,7 @@ import { AdminController } from './api/admin/admin.controller';
 import { OrderController } from './api/order/order.controller';
 import { dbImports, dbProviders } from './db/_index';
 import { AuthMiddleware } from './middleware/auth.middleware';
+import { AdminAuthMiddleware } from './middleware/admin.auth.middleware';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import Formatter from 'src/lib/formatter/_index';
 
@@ -15,6 +16,7 @@ import Formatter from 'src/lib/formatter/_index';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AdminAuthMiddleware).forRoutes(AdminController);
     consumer.apply(LoggerMiddleware, AuthMiddleware).forRoutes(OrderController);
   }
 }
