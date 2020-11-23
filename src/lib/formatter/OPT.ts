@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 
 import { AbstractFormatter } from './abstract';
+import { OrderInterface } from 'src/db/schemas/order.schema';
 import { CarrierService } from 'src/db/carrier.service';
 import { stateDetector } from 'src/lib/stateDetector';
 
@@ -63,6 +64,6 @@ export class OPT extends AbstractFormatter {
         OPTProductID: product.eanCode,
         Qty: product.quantity,
       })),
-    };
+    } as OrderInterface;
   }
 }

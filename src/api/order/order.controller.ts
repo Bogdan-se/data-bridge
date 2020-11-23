@@ -18,6 +18,7 @@ import { OrderService } from 'src/db/order.service';
 import { notifyPartner } from 'src/lib/order/notifyPartner';
 import { notifyProvider } from 'src/lib/order/notifyProvider';
 import { waitForStatusUpdate } from 'src/lib/order/waitForStatusUpdate';
+import { validate } from 'src/lib/formatter/validate';
 
 @Controller('order')
 export class OrderController {
@@ -36,6 +37,7 @@ export class OrderController {
 
     try {
       const order = await formatter.normalizeOrder(req.body);
+      await validate(order);
 
       const createdOrder = await this.orderService.create({
         partnerId: partner._id,
@@ -46,7 +48,8 @@ export class OrderController {
       } as Order);
 
       this.processOrder(createdOrder, partner);
-    } catch {
+    } catch (e) {
+      logger.error(`Invalid order ${JSON.stringify(_.toPlainObject(req.body))}, error:${e.message}`);
       await this.orderService.create({
         partnerId: partner._id,
         data: null,
